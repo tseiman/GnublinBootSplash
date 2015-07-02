@@ -15,7 +15,7 @@ This is a experimental project shared here. It doesn't claim to be complete neit
 ## How it works
 ### basic configuration
 GnublinBootSplash takes a small number of configuration parameters from command line and is configured trough a GLib style configuration file (/etc/gnublinbootsplash.cfg). 
-It is started either as a SystemV or as a systemd daemon.
+It is started either as a SystemV or as a systemd daemon. See as well [README](https://github.com/tseiman/GnublinBootSplash/blob/master/README)  file
 
 ### Legacy mode
 - in "legacy mode" GnublinBootSplash opens a fifo and takes text based messages to be displayed and to set progress bar e.g:
