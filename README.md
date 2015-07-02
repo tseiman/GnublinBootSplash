@@ -3,7 +3,6 @@ Basic linux framebuffer bootsplash daemon, to display configureable boot screen 
 Originally it was made for a GNUbLIN (http://gnublin.embedded-projects.net) mini LINUX ARM computer with a greyscale LCD for an embedded project. However GnublinBootSplash is now ported to Raspberry PI, tested with ARCH linux (but as well debian and for sure runs with others...). It runs with traditional SystemV startup scripts but as well systemd, using kdbus to obtain boot information.
 
 ## Notice
-systemd implementation is nearby ready and ongoing - stay tuned...
 This is a experimental project shared here. It doesn't claim to be complete neither in code nor in documentation. 
 
 ## dependencies
@@ -52,7 +51,6 @@ make install
 finally add the bootsplash daemon to startup by creating either a SystemV startup script or a systemd service file.
 
 ## ToDo
-- finalize systemd integration
 - start stop scripts for SystemV and systemd
 - any handling to quit the daemon in systemd mode, in SystemV mode it might be quit by startx script e.g. by sending 
 ```bash
