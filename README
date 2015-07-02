@@ -158,6 +158,11 @@
 		Default:	none
 		Example:	Pos=12;82
 
+    MaxLen	Maximal length of the status text on the screen before it is cropped with "..."
+		Mandatory
+		Default:	none
+		Example:	MaxLen=50
+
 
   4.) RUN
  ---------

@@ -77,6 +77,7 @@ static void toString()
     dumpConfInt("status_text_fontsize", conf->status_text_fontsize);
     dumpConfInt("status_text_xpos", conf->status_text_xpos);
     dumpConfInt("status_text_ypos", conf->status_text_ypos);
+    dumpConfInt("status_text_maxlen", conf->status_text_maxlen);
     dumpConfInt("verbose", conf->verbose);
     dumpConfStr("fifo", conf->fifo);
     dumpConfStr("lock", conf->lock);
@@ -189,6 +190,19 @@ resetError(error);
     conf->status_text_ypos = pos[1];
 
 
+/* reading maximal len of status text */
+resetError(error);
+
+
+
+    conf->status_text_maxlen =
+	g_key_file_get_integer(keyfile, "StatusText", "MaxLen",  &error);
+
+    if (!conf->status_text_maxlen) {
+	exitAndPrintError("reading status text MaxLen");
+    }
+
+
 /* reading bootsplash flags */
 
  resetError(error);
@@ -247,6 +261,7 @@ Settings *getConf()
 void destroyConfig()
 {
     if(!conf) return;
+    bootLogger(LOG_INFO,"cleaning up configuration\n");
 
     if(conf->fb_device) free(conf->fb_device);
     if(conf->background_image) free(conf->background_image);

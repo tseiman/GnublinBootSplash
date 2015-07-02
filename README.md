@@ -20,7 +20,7 @@ It is started either as a SystemV or as a systemd daemon. See as well [README](h
 ### Legacy mode
 - in "legacy mode" GnublinBootSplash opens a fifo and takes text based messages to be displayed and to set progress bar e.g:
   ```bash
-  ~> echo "message=booting service xyz; percent=20" >/tmp/bootsplash.fifo
+  ~> echo "message=booting service xyz;percent=20" >/tmp/bootsplash.fifo
   ```
 Following parameters in messages are understood:
 - message=<message>       : let GnublinBootSplash print a status message to the display
@@ -28,7 +28,7 @@ Following parameters in messages are understood:
 - help                    : prints a help to the system log ;-)
 - exit                    : let the bootsplash daemon clean up and exit
 
-multiple parameters might be combined and seperated by a ';'. 
+multiple parameters might be combined and seperated by a ';', no space has to follow the colon. 
 The bootinformation passed to the fifo need to come from the SystemV startup scripts by adding the above printend "echo" line to the startup scripts.
 
 ### Systemd mode

@@ -9,6 +9,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <syslog.h>
+#include <stdbool.h>
 
 #include "comm.h"
 #include "framebuffer.h"
@@ -24,27 +25,12 @@
 
 static Settings *conf = NULL;
 
-static int run = FALSE;
+// static int run = FALSE;
 
 static char *message = NULL;
 static int percent = 0;
 
 
-
-
-
-void sig_handler(int signo)
-{
-    if (signo == SIGINT) {
-
-	bootLogger(LOG_INFO, "received SIGINT\n");
-	run = FALSE;
-    }
-    if (signo == SIGTERM) {
-	bootLogger(LOG_INFO, "received SIGTERM\n");
-	run = FALSE;
-    }
-}
 
 /* this function is derived from http://wordptr.com/2012/11/25/linux-daemon-lock-file-a-bug-retrospective/ */
 
@@ -100,8 +86,27 @@ static void remove_lockfile()
 
 void callbackExit() 
 { 
-    run = FALSE;
+	destroy_splash();
+        closeComm();
+	remove_lockfile();
+	bootLogger(LOG_INFO, "%s", conf->daemonize ? "stop daemon\n" :"stop process\n" );
+	closeBootLog();
+	destroyConfig();
+	exit(0);
 }
+
+
+
+void sig_handler(int signo)
+{
+    if ((signo == SIGINT) || (signo == SIGTERM)) {
+        bootLogger(LOG_INFO, "catched SIGINT or SIGTERM\n");
+
+	callbackExit();
+    }
+}
+
+
 
 void callbackSetDisplayProgress(int *progress, char *msg) 
 {
@@ -110,8 +115,8 @@ void callbackSetDisplayProgress(int *progress, char *msg)
     if(progress)  percent = *progress;
     if(msg)  message = msg;
 
-    display_progress(percent, message);
-    bootLogger(LOG_DEBUG, "message=%s, percent=%d \n", message, percent);
+    display_progress(percent, message ? message : "");
+    bootLogger(LOG_DEBUG, "message=%s, percent=%d \n", message ? message : "" , percent);
 
 }
 
@@ -211,18 +216,21 @@ void daemonRun(Settings * settings, int argc, char **argv)
     registerExitCallbackComm(&callbackExit);
 
 
-    run = TRUE;
+//    run = TRUE;
 
-    while (run) {
+    while (true) {
 	startComm();
     }
+    
 
-    destroy_splash();
+
+
+/*    destroy_splash();
     closeComm();
     remove_lockfile();
     bootLogger(LOG_INFO, "%s", conf->daemonize ? "stop daemon\n" :"stop process\n" );
     closeBootLog();
-
+*/
  /*   exit(0); */
 
    // return 0; 

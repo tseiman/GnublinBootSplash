@@ -17,10 +17,11 @@
  */
 
 
-#ifndef FALSE
-#define FALSE (0)
-#define TRUE (!FALSE)
+#ifndef false
+#define false (0)
+#define true (!false)
 #endif
+
 
 typedef struct {
     char *fb_device;
@@ -32,6 +33,7 @@ typedef struct {
     int status_text_fontsize;
     int status_text_xpos;
     int status_text_ypos;
+    int status_text_maxlen;
     int verbose;
     char *fifo;
     char *lock;

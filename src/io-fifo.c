@@ -55,6 +55,9 @@ static void run_Command(int argc, char **argv)
     int i, percent;
     char *cmd;
     char *parameter = NULL;
+    char *message = NULL;
+    int len  = 0;
+
     for (i = 0; i < argc; ++i) {
 	cmd = strtok(argv[i], "=");
         bootLogger(LOG_DEBUG, "found parameter: \"%s\"\n",  cmd); 
@@ -69,7 +72,22 @@ static void run_Command(int argc, char **argv)
 		break;
 	    }
 
+
+	    len = strnlen(parameter,conf->status_text_maxlen);
+	    message = (char *)malloc((len + 20) *(sizeof(char)));
+	    if(message == 0) {
+    		bootLogger(LOG_ERR, "cant allocate any memory: %s\n", strerror(errno));
+    		return;
+	    }
+	    memset(message,0,len + 20);
+	    strncpy(message,parameter,len);
+	    if(len > conf->status_text_maxlen - 3) strncat(message,"...",3);
+	    
+
+	    
 	    if(messageCallback) messageCallback(NULL,parameter);
+	    free(message);
+
 
 	} else if (!strncmp(cmd, "percent", 7)) {
 	    if (!(parameter = strtok(NULL, "="))) {

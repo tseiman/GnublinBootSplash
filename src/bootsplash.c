@@ -111,10 +111,10 @@ int main(int argc, char **argv)
 	    config = optarg;
 	    break;
 	case 'd':
-	    dontdaemonize = FALSE;
+	    dontdaemonize = false;
 	    break;
 	case 'f':
-	    forceunlock = TRUE;
+	    forceunlock = true;
 	    break;
 	case '?':
 	    if (strncmp(argv[optind - 1], "--dfb:", 6)) {
