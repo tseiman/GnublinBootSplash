@@ -1,0 +1,250 @@
+
+  GnublinBootSplash change log
+ =================================
+
+ Thomas 'tseiman' Schmidt <t.schmidt@sh-home.de> (c) 2013
+
+  1.) DESCRIPTION
+  2.) INSTALL
+  3.) CONFIGURATION
+  4.) RUN
+
+  1.) DESCRIPTION
+ -----------------
+
+  2.) INSTALL
+ -------------
+
+ Please see typical installation proceed in INSTALL file. 
+ 
+ Unpack the file GnublinBootSplash-XX.XX.XX.tar.gz by 
+
+    ~> tar xzvf GnublinBootSplash-XX.XX.XX.tar.gz
+
+ and change to folder "GnublinBootSplash-XX.XX.XX"
+ where "XX" stands for versioning numbers.
+ Generally the package is build with
+
+    ~GnublinBootSplash-XX.XX.XX > ./configure
+    ~GnublinBootSplash-XX.XX.XX > make
+    ~GnublinBootSplash-XX.XX.XX > make install 
+
+ where "make install" is optional.
+ Wit hthe install the binary "bootsplash" typacally goes 
+ to "/usr/local/bin", all other files will go to 
+ "/var/local/bootsplash" It makes sense to move the 
+ configuration file "/var/local/bootsplash/gnublinbootsplash.cfg" 
+ to "/etc" by executing on commandline
+
+    ~GnublinBootSplash-XX.XX.XX > cp /var/local/bootsplash/gnublinbootsplash.cfg /etc
+
+ which is not automatically done yet.
+
+
+  3.) CONFIGURATION
+ -------------------
+ GnublinBootSplash is configured with the "/var/local/bootsplash/gnublinbootsplash.cfg"
+ configuration file. The file can contain several parameters. 
+ Please see as well the file itself for a sceleton and some example.
+ The file has typical INI file structure e.g.:
+
+    [SomeSection]
+    SomeBoolParameter=true
+    SomeIntParam=33
+    SomeListOfInt=34;55;22
+    SomeFloat=2.4334
+
+    [SomeOtherSection]
+    SomeParameterWithStrin=hallo
+
+
+ The following parameters are valid for GnublinBootSplash:
+
+
+    Section [GnublinBootSplash]:
+
+    Verbose	integer value from 0 = (nearby) no logging to 7 
+		logging including debug messages
+		Optional
+		Default:	7
+		Example: 	Verbose=3
+
+    LockFile	path and name to the lock file which prevents to run
+		the bootsplash daemon in multiple instances. 
+		GnublinBootSplash checks for existence of this file
+		and will not start if this file exists already.
+		You can start "bootsplash" binary with "-f/--forceunlock"
+		to overide this feature (NOTE: if overiding with "-f" 
+		there is no security to prevent to run bootsplash 2 
+		times in paralel
+		Optional
+		Default:	/var/lock/bootsplash.lock
+		Example:	LockFile=/tmp/mybootsplash.lock
+
+    Daemonize	can have "true" or "false" (lower case !). If "false"
+		the programm will not daemonizing itself and stay on the
+		console where it was started from. This is for testing 
+		and 
+		Optional
+		Default:	true
+		Example:	Daemonize=false
+
+    Fifo	path and name to the FiFo which is used to communicate 
+		with the daemon. In this FiFo commands can be written 
+		to control it.
+		Optional
+		Default:	/tmp/bootsplash.fifo
+		Example:	Fifo=/usr/local/tmp/mybootsplash.fifo
+
+
+    Section [Framebuffer]:
+
+    Device	Sets the path and name of the framebuffer device to a 
+		fixed one. If not set the first one found will be used.
+		Optional
+		Default:	none
+		Example:	Device=/dev/fb0
+
+
+    Section [Background]:
+
+    Image	Sets path and name to the image for the screen
+		background. Setting this file is mandatory.
+		For DOGXL160 the size needs to be 160x104 and should
+		contain reduced greytone color set.
+		Which image filetype depends on the DirectFB
+		implementation - PNG is a good choice.
+		Mandatory
+		Default:	none
+		Example:	Image=/var/local/bootsplash/Gnublin_BootSplash_frame.png
+
+
+    Section [ProgressBar]:
+
+    Image	Sets path and name to the image for the complete 
+		progressbar. The image will be cropped from the 
+		right according to the percentage the progressbar 
+		should be shown. Setting this file is mandatory.
+		It should contain reduced greytone color set.
+		Which image filetype depends on the DirectFB
+		implementation - PNG is a good choice.
+		Mandatory
+		Default:	none
+		Example:	Image=/var/local/bootsplash/Gnublin_BootSplash_progress.png
+
+    Pos		Position of the upper left corner of the progressbar 
+		image on the screen 
+		Mandatory
+		Default:	none
+		Example:	Pos=13;89
+
+
+    Section [StatusText];
+
+    Font	Sets path and name of the font true type font file.
+		Mandatory
+		Default:	none
+		Example:	Font=data/arial.ttf
+
+    FontSize	Set the font size. Valid - all positive integer.
+		Makes eventually sense from 8 to 64.
+		Mandatory
+		Default:	none
+		Example:	FontSize=10
+
+    Pos		Position of the upper left corner of the status 
+		text on the screen 
+		Mandatory
+		Default:	none
+		Example:	Pos=12;82
+
+
+  4.) RUN
+ ---------
+
+ The binary bootsplash will typically run as daemon and detach from
+ the calling script or console. After detach the daemon can be
+ controlled over it's fifo. NOTE: make sure that the Fifo has the right
+ access rights - and cannot be accessed by low priviliged users.
+
+
+ Starting the daemon:
+
+ ~> bootsplash
+
+ would be with no start parameters. The bootsplash program will look
+ for "/etc/gnublinbootsplash.cfg" for configuration and start to run 
+ if configuration is found. If the configuration file cannot be found
+ the process will exit with an error message.
+
+ Following additional parameters can be given:
+
+ [--help              , -h         ] :  Optional, prints help message 
+
+ [--verbose=<level>   , -v <level> ] :  Optional, prints out some debug information
+                                        if there are any. Per default set to max.
+                                        can have value from 0 (no logging) to
+                                        7 maximum logging (yes syslog has 7 categories...) 
+
+ [--configfile=<file> , -c <file>  ] :  Optional, gives path and filename of
+                                        configuration file. 
+
+ [--dontdaemonize     , -d         ] :  don't daemonize, for testing especially
+                                        on non embedded hardware. 
+
+ [--forceunlock       , -f         ] :  force to remove lockfile before start 
+
+ [--dfb:<opts>                     ] :  Optional, DirectFB parameters, see DFB
+                                        manual for more information.
+
+
+
+ Example:
+
+     ~> bootsplash --dfb:system=x11,mode=160x104 -d -c data/gnublinbootsplash.cfg
+
+ This will start the bootsplash process _not_ as daemon with the 
+ configuration file "data/gnublinbootsplash.cfg" relative from 
+ actual path. Additionally there are some DirectFB parameters 
+ given, which are passed to DirectFB framework - please see 
+ DirectFB documentation for more information.
+
+
+ Controling the daemon:
+
+ Once the daemon is up, it can be controled by the fifo which is, 
+ if not configured to be somewhere else, "/tmp/bootsplash.fifo"
+ The Daemon accepts following commands:
+
+    [ percent=<value> ] : percent the progressbar should be set
+                          to can be in range of 0 to 100
+
+    [ message=<value> ] : writes the status message to bootsplash
+
+    [ quit            ] : end the bootsplash daemon
+
+    [ help            ] : write this message to syslog if running 
+                          as daemon or to stdout if running as 
+                          normal process
+
+ paraeters are separated by ';' character e.g.: 
+ "precent=100;message=hello world" settings are applied on FiFo 
+ close (EOT) by client.
+
+ Simple examples to pass this commands to the daemon are:
+
+    ~> echo -n "help" >/tmp/bootsplash.fifo
+
+    ~> echo -n "precent=10;message=one cool message" >/tmp/bootsplash.fifo
+    ~> echo -n "precent=20;message=hello world" >/tmp/bootsplash.fifo
+ 
+    ~> echo -n "quit" >/tmp/bootsplash.fifo
+
+
+
+/* EOF */
+
+
+
+
+
