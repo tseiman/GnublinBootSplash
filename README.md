@@ -31,7 +31,7 @@ multiple parameters might be combined and seperated by a ';'.
 The bootinformation passed to the fifo need to come from the SystemV startup scripts by adding the above printend "echo" line to the startup scripts.
 
 ### Systemd mode
-GnublinBootSplash connects to 0-system kdbus and optains boot information there. Once it is started it works automatically.
+GnublinBootSplash connects to 0-system kdbus and optains boot information there. Once it is started it works automatically. there is no fifo created and there is no need to pass any message to it.
 
 ## Installation
 clone GnublinBootSplash to your local computer and run
