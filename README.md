@@ -54,9 +54,8 @@ finally add the bootsplash daemon to startup by creating either a SystemV startu
 ## ToDo
 - finalize systemd integration
 - start stop scripts for SystemV and systemd
-- any handling to quit the daemon in systemd mode, in SystemV mode it might be quit by startx script e.g. by sending
-```bash
+- any handling to quit the daemon in systemd mode, in SystemV mode it might be quit by startx script e.g. by sending ```bash
   ~> echo "quit" >/tmp/bootsplash.fifo
-  ```
+``` 
 to the deamon to release framebuffer and stop it.
 
