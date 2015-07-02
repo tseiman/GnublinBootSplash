@@ -48,4 +48,4 @@ next is to do a
 make
 make install
 ``` 
-next step ist to add the bootsplash daemon to startup by creating either a SystemV startup script or a systemd service file.
+finally add the bootsplash daemon to startup by creating either a SystemV startup script or a systemd service file.
