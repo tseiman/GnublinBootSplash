@@ -28,6 +28,10 @@ Following parameters in messages are understood:
 - exit                    : let the bootsplash daemon clean up and exit
 
 multiple parameters might be combined and seperated by a ';'. 
+The bootinformation passed to the fifo need to come from the SystemV startup scripts by adding the above printend "echo" line to the startup scripts.
+
+### Systemd mode
+GnublinBootSplash connects to 0-system kdbus and optains boot information there. Once it is started it works automatically.
 
 ## Installation
 clone GnublinBootSplash to your local computer and run
