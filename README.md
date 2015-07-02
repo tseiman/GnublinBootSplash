@@ -1,6 +1,6 @@
 # GnublinBootSplash
 Basic linux framebuffer bootsplash daemon, to display configureable boot screen on small, embedded, LCD screens which are supported by a framebuffer driver/module, opening a framebuffer (e.g.: /dev/fb1) device.
-Originally it was made for a GNUbLIN (http://gnublin.embedded-projects.net) mini LINUX ARM computer with a greyscale LCD for an embedded project. However GnublinBootSplash is now ported to Raspberry PI, tested with ARCH linux (but as well debian and for sure runs with others...) and systemd, using kdbus to obtain boot information.
+Originally it was made for a GNUbLIN (http://gnublin.embedded-projects.net) mini LINUX ARM computer with a greyscale LCD for an embedded project. However GnublinBootSplash is now ported to Raspberry PI, tested with ARCH linux (but as well debian and for sure runs with others...). It runs with traditional SystemV startup scripts but as well systemd, using kdbus to obtain boot information.
 
 ## Notice
 This is a experimental project shared here. It doesn't claim to be complete neither in code nor in documentation. 
